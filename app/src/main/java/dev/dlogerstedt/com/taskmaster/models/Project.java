@@ -1,4 +1,4 @@
-package dev.dlogerstedt.com.taskmaster;
+package dev.dlogerstedt.com.taskmaster.models;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
