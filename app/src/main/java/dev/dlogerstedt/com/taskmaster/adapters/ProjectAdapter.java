@@ -1,4 +1,4 @@
-package dev.dlogerstedt.com.taskmaster;
+package dev.dlogerstedt.com.taskmaster.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
+
+import dev.dlogerstedt.com.taskmaster.R;
 
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>  {
@@ -31,8 +33,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     public ProjectAdapter.ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LinearLayout exerciseTextView = (LinearLayout)LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.project_text_view, viewGroup, false);
 
-        ProjectViewHolder exerViewHolder = new ProjectViewHolder(exerciseTextView);
-        return exerViewHolder;
+        ProjectViewHolder projectViewHolder = new ProjectViewHolder(exerciseTextView);
+        return projectViewHolder;
     }
 
     @Override

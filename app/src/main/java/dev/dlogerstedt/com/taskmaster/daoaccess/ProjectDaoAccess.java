@@ -1,4 +1,4 @@
-package dev.dlogerstedt.com.taskmaster;
+package dev.dlogerstedt.com.taskmaster.daoaccess;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -7,6 +7,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import java.util.List;
+
+import dev.dlogerstedt.com.taskmaster.models.Project;
 
 @Dao
 public interface ProjectDaoAccess {
