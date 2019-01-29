@@ -22,6 +22,9 @@ public interface TaskDaoAccess {
     @Query("SELECT * FROM Task WHERE taskId = :taskId")
     Task fetchOneTaskById (long taskId);
 
+    @Query("SELECT * FROM Task WHERE projectId = :projectId")
+    List<Task> fetchTasksByProjectId (long projectId);
+
     @Query("SELECT * FROM Task")
     List<Task> fetchTasks ();
 

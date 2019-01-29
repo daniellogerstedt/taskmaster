@@ -9,7 +9,7 @@ public class Project {
 //https://medium.freecodecamp.org/room-sqlite-beginner-tutorial-2e725e47bfab
     @NonNull
     @PrimaryKey(autoGenerate = true)
-    private long projectId;
+    private long id;
     private String title;
     private String description;
 
@@ -22,11 +22,11 @@ public class Project {
         this.description = description;
     }
 
-    public long getProjectId () {return this.projectId;}
+    public long getId () {return this.id;}
     public String getTitle () {return this.title;}
     public String getDescription () {return this.description;}
 
-    public void setProjectId (long id) {this.projectId = id;}
+    public void setId (long id) {this.id = id;}
     public void setTitle (String title) {this.title = title;}
     public void setDescription (String description) {this.description = description;}
 

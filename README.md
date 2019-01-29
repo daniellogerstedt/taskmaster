@@ -12,3 +12,7 @@ Install on phone and open it.
 
 <img src="./assets/mainactivity.png" height=500 />
 <img src="./assets/projectcreationactivity.png" height=500 />
+
+
+<img src="./assets/projectviewactivity.png" height=500 />
+<img src="./assets/taskcreationactivity.png" height=500 />
