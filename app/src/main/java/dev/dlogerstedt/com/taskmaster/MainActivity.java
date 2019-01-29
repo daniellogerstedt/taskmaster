@@ -1,12 +1,13 @@
 package dev.dlogerstedt.com.taskmaster;
 
 import android.arch.persistence.room.Room;
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +19,9 @@ import dev.dlogerstedt.com.taskmaster.models.Project;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView projectList;
-    private RecyclerView.Adapter projectAdapter;
+    private ProjectAdapter projectAdapter;
     private RecyclerView.LayoutManager projectLayoutManager;
-    private List<String> projectStrings;
+    private List<Project> projects;
     ProjectDatabase db;
 
     @Override
@@ -30,11 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = Room.databaseBuilder(getApplicationContext(), ProjectDatabase.class, "projects").allowMainThreadQueries().build();
 
-        List<Project> projects = db.daoAccess().fetchProjects();
-        projectStrings = new ArrayList<>();
-        for (Project project : projects) {
-            projectStrings.add(project.toString());
-        }
+        projects = db.daoAccess().fetchProjects();
 
         projectList = findViewById(R.id.project_recycler_view);
 
@@ -46,29 +43,23 @@ public class MainActivity extends AppCompatActivity {
         projectList.setLayoutManager(projectLayoutManager);
 
         // the adapter for the recycler view
-        projectAdapter = new ProjectAdapter(projectStrings);
+        projectAdapter = new ProjectAdapter(projects);
         projectList.setAdapter(projectAdapter);
 
     }
 
     public void onAddProjectClick (View v) {
 
-//        TODO: Add a new activity to create projects.
+        Intent projectAddIntent = new Intent(this, ProjectCreationActivity.class);
+        startActivityForResult(projectAddIntent, 1234);
 
-//        TextView titleView = findViewById(R.id.title_input_field);
-//        TextView descriptionView = findViewById(R.id.description_input_field);
-//        TextView quantityView = findViewById(R.id.quantity_input_field);
-//        String title = titleView.getText().toString();
-//        String description = descriptionView.getText().toString();
-//        int quantity = Integer.parseInt(quantityView.getText().toString());
-//        Project theProject = new Project(title, quantity, description);
-//        db.daoAccess().insertProject(theProject);
-//        projectStrings.add(theProject.toString());
-//        projectAdapter.notifyItemInserted(projectStrings.size() - 1);
-//        titleView.setText("");
-//        descriptionView.setText("");
-//        quantityView.setText("");
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+        projects = db.daoAccess().fetchProjects();
+        projectAdapter.updateAdapterData(projects);
+
+    }
 }
