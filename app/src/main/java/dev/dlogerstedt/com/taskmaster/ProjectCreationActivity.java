@@ -1,7 +1,7 @@
 package dev.dlogerstedt.com.taskmaster;
 
-import android.arch.persistence.room.Room;
-import android.support.v7.app.AppCompatActivity;
+import androidx.room.Room;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
