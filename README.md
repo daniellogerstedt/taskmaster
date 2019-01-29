@@ -9,3 +9,6 @@ This is an application designed to be a kanban board. A user should be able to a
 Install on phone and open it.
 
 ### Screenshots
+
+<img src="./assets/mainactivity.png" height=500 />
+<img src="./assets/projectcreationactivity.png" height=500 />
