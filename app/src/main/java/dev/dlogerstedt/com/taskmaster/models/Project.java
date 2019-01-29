@@ -17,8 +17,9 @@ public class Project {
 
     public Project () {}
 
-    public Project (String title) {
+    public Project (String title, String description) {
         this.title = title;
+        this.description = description;
     }
 
     public long getProjectId () {return this.projectId;}

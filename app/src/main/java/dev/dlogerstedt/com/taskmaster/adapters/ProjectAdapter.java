@@ -10,10 +10,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import dev.dlogerstedt.com.taskmaster.R;
+import dev.dlogerstedt.com.taskmaster.models.Project;
 
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>  {
-    private List<String> projectDataset;
+    private List<Project> projectDataset;
 
     public static class ProjectViewHolder extends RecyclerView.ViewHolder {
 
@@ -24,7 +25,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         }
     }
 
-    public ProjectAdapter(List<String> eData){
+    public ProjectAdapter(List<Project> eData){
         projectDataset = eData;
     }
 
@@ -39,7 +40,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder exerciseViewHolder, int i) {
-        ((TextView)exerciseViewHolder.projectTextView.findViewById(R.id.project_text_view)).setText(projectDataset.get(i));
+        Project current = projectDataset.get(i);
+        ((TextView)exerciseViewHolder.projectTextView.findViewById(R.id.project_title_view)).setText(current.getTitle());
+        ((TextView)exerciseViewHolder.projectTextView.findViewById(R.id.project_description_view)).setText(current.getDescription());
+    }
+
+    public void updateAdapterData(List<Project> projects) {
+        projectDataset = projects;
+        this.notifyDataSetChanged();
     }
 
     @Override
