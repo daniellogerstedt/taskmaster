@@ -10,7 +10,7 @@ import static androidx.room.ForeignKey.CASCADE;
 
 // https://android.jlelse.eu/android-architecture-components-room-relationships-bf473510c14a - Room Database Relationships
 @Entity(foreignKeys = @ForeignKey(entity = Project.class,
-        parentColumns = "projectId",
+        parentColumns = "id",
         childColumns = "projectId",
         onDelete = CASCADE))
 public class Task {

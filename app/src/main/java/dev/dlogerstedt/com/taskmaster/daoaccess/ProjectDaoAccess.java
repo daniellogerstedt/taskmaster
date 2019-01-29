@@ -19,7 +19,7 @@ public interface ProjectDaoAccess {
     @Insert
     void insertMultipleProjects (List<Project> projectList);
 
-    @Query("SELECT * FROM Project WHERE projectId = :projectId")
+    @Query("SELECT * FROM Project WHERE id = :projectId")
     Project fetchOneProjectById (long projectId);
 
     @Query("SELECT * FROM Project")

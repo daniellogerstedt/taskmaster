@@ -10,10 +10,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import dev.dlogerstedt.com.taskmaster.R;
+import dev.dlogerstedt.com.taskmaster.models.Task;
 
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder>  {
-    private List<String> taskDataset;
+    private List<Task> taskDataset;
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
@@ -24,7 +25,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
     }
 
-    public TaskAdapter(List<String> eData){
+    public TaskAdapter(List<Task> eData){
         taskDataset = eData;
     }
 
@@ -39,7 +40,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder exerciseViewHolder, int i) {
-        ((TextView)exerciseViewHolder.taskTextView.findViewById(R.id.task_text_view)).setText(taskDataset.get(i));
+        Task task = taskDataset.get(i);
+        ((TextView)exerciseViewHolder.taskTextView.findViewById(R.id.task_text_view)).setText(task.getTitle());
     }
 
     @Override
