@@ -10,11 +10,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import dev.dlogerstedt.com.taskmaster.R;
-import dev.dlogerstedt.com.taskmaster.models.Task;
+import dev.dlogerstedt.com.taskmaster.models.ProjectTask;
 
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder>  {
-    private List<Task> taskDataset;
+    private List<ProjectTask> projectTaskDataset;
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
@@ -25,8 +25,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
     }
 
-    public TaskAdapter(List<Task> eData){
-        taskDataset = eData;
+    public TaskAdapter(List<ProjectTask> eData){
+        projectTaskDataset = eData;
     }
 
     @NonNull
@@ -40,12 +40,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder exerciseViewHolder, int i) {
-        Task task = taskDataset.get(i);
-        ((TextView)exerciseViewHolder.taskTextView.findViewById(R.id.task_text_view)).setText(task.getTitle());
+        ProjectTask projectTask = projectTaskDataset.get(i);
+        ((TextView)exerciseViewHolder.taskTextView.findViewById(R.id.task_text_view)).setText(projectTask.getTitle());
+    }
+
+    public void updateAdapterData(List<ProjectTask> tasks) {
+        projectTaskDataset = tasks;
+        this.notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return taskDataset.size();
+        return projectTaskDataset.size();
     }
 }

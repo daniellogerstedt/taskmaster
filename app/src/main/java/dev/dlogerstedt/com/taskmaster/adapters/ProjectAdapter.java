@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import dev.dlogerstedt.com.taskmaster.MainActivity;
 import dev.dlogerstedt.com.taskmaster.ProjectViewActivity;
 import dev.dlogerstedt.com.taskmaster.R;
 import dev.dlogerstedt.com.taskmaster.models.Project;
@@ -51,7 +50,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         ((TextView)exerciseViewHolder.projectTextView.findViewById(R.id.project_title_view)).setText(current.getTitle());
         ((TextView)exerciseViewHolder.projectTextView.findViewById(R.id.project_description_view)).setText(current.getDescription());
         Button projectButton = exerciseViewHolder.projectTextView.findViewById(R.id.project_button);
-        projectButton.setContentDescription(Long.toString(current.getId()));
+        projectButton.setContentDescription(current.getId());
         projectButton.setOnClickListener(
 
 
@@ -65,7 +64,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
                     // Make an intent and do the thing with it.
                     Intent projectIntent = new Intent(context, ProjectViewActivity.class);
-                    projectIntent.putExtra("projectId", Long.parseLong(v.findViewById(R.id.project_button).getContentDescription().toString()));
+                    projectIntent.putExtra("projectId", v.findViewById(R.id.project_button).getContentDescription().toString());
                     context.startActivity(projectIntent);
                 }
             });

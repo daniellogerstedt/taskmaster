@@ -1,33 +1,42 @@
 package dev.dlogerstedt.com.taskmaster;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 import dev.dlogerstedt.com.taskmaster.adapters.TaskAdapter;
-import dev.dlogerstedt.com.taskmaster.database.ProjectDatabase;
-import dev.dlogerstedt.com.taskmaster.database.TaskDatabase;
-import dev.dlogerstedt.com.taskmaster.models.Project;
-import dev.dlogerstedt.com.taskmaster.models.Task;
+import dev.dlogerstedt.com.taskmaster.models.ProjectTask;
+
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProjectViewActivity extends AppCompatActivity {
 
     private RecyclerView taskList;
     private TaskAdapter taskAdapter;
     private RecyclerView.LayoutManager taskLayoutManager;
-    private List<Task> tasks;
-    TaskDatabase taskDB;
-    ProjectDatabase projectDB;
+    private List<ProjectTask> tasks;
+    FirebaseFirestore db;
     Intent intent;
     Bundle extras;
-    long projectId;
+    String projectId;
+
 
 
     @Override
@@ -37,18 +46,42 @@ public class ProjectViewActivity extends AppCompatActivity {
 
         intent = getIntent();
         extras = intent.getExtras();
-        projectId = extras.getLong("projectId");
+        projectId = extras.getString("projectId");
+        db = FirebaseFirestore.getInstance();
+        tasks = new ArrayList<>();
 
-        projectDB = Room.databaseBuilder(getApplicationContext(), ProjectDatabase.class, "projects").allowMainThreadQueries().build();
-        taskDB = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "tasks").allowMainThreadQueries().build();
+        db.collection("Projects").document(projectId).collection("Tasks").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    tasks = new ArrayList<>();
+                    if (task.getResult() != null)
+                        for(QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String, Object> taskMap = document.getData();
+                            String id = (String)taskMap.get("id");
+                            String title = (String)taskMap.get("title");
+                            String status = (String)taskMap.get("status");
+                            ProjectTask current = new ProjectTask(title, status);
+                            current.setTaskId(id);
+                            tasks.add(current);
+                        }
+                    taskAdapter.updateAdapterData(tasks);
+                }
+            }
+        });
 
-        Project theProject = projectDB.daoAccess().fetchOneProjectById(projectId);
+        final TextView projectTitle = findViewById(R.id.project_view_name_text);
 
-        TextView projectTitle = findViewById(R.id.project_view_name_text);
+        db.collection("Projects").document(projectId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String title = (String)documentSnapshot.getData().get("title");
+                    projectTitle.setText(title);
+                }
+            }
+        });
 
-        projectTitle.setText(theProject.getTitle());
-
-        tasks = taskDB.daoAccess().fetchTasksByProjectId(projectId);
 
         taskList = findViewById(R.id.task_recycler_view);
 
@@ -67,9 +100,34 @@ public class ProjectViewActivity extends AppCompatActivity {
 
     public void onAddTaskClick (View v) {
 
-        Intent taskAddIntent = new Intent(this, TaskCreationActivity.class);
+        Intent taskAddIntent = new Intent(this, ProjectTaskCreationActivity.class);
         taskAddIntent.putExtra("projectId", projectId);
         startActivityForResult(taskAddIntent, 2341);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        db.collection("Projects").document(projectId).collection("Tasks").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            tasks = new ArrayList<>();
+                            if (task.getResult() != null)
+                                for(QueryDocumentSnapshot document : task.getResult()) {
+                                    Map<String, Object> taskMap = document.getData();
+                                    String id = (String)taskMap.get("id");
+                                    String title = (String)taskMap.get("title");
+                                    String status = (String)taskMap.get("status");
+
+                                    ProjectTask current = new ProjectTask(title, status);
+                                    current.setTaskId(id);
+                                    tasks.add(current);
+                                }
+                            taskAdapter.updateAdapterData(tasks);
+                        }
+                    }
+                });
     }
 }
