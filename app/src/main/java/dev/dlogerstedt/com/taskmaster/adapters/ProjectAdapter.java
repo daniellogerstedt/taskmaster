@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import dev.dlogerstedt.com.taskmaster.models.Project;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>  {
     private List<Project> projectDataset;
+    private String TAG = "ADAPTER";
 
     public static class ProjectViewHolder extends RecyclerView.ViewHolder {
 
@@ -49,8 +51,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         Project current = projectDataset.get(i);
         ((TextView)exerciseViewHolder.projectTextView.findViewById(R.id.project_title_view)).setText(current.getTitle());
         ((TextView)exerciseViewHolder.projectTextView.findViewById(R.id.project_description_view)).setText(current.getDescription());
-        Button projectButton = exerciseViewHolder.projectTextView.findViewById(R.id.project_button);
-        projectButton.setContentDescription(current.getId());
+        final Button projectButton = exerciseViewHolder.projectTextView.findViewById(R.id.project_button);
+        projectButton.setContentDescription("View Project " + current.getTitle() + " : " + current.getId());
         projectButton.setOnClickListener(
 
 
@@ -64,7 +66,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
                     // Make an intent and do the thing with it.
                     Intent projectIntent = new Intent(context, ProjectViewActivity.class);
-                    projectIntent.putExtra("projectId", v.findViewById(R.id.project_button).getContentDescription().toString());
+                    projectIntent.putExtra("projectId", v.findViewById(R.id.project_button).getContentDescription().toString().split("\\s:\\s")[1]);
+                    Log.d(TAG, "End Of On Click. Content Description: " + projectButton.getContentDescription());
                     context.startActivity(projectIntent);
                 }
             });
