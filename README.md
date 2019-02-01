@@ -41,3 +41,7 @@ Increase size of buttons for viewing projects to help with clickability - Comple
 Change project list items to being focusable - Completed
 
 Add content description to button for viewing projects - Completed
+
+### APK for Testing
+
+[APK]("./app/build/outputs/apk/debug/app-debug.apk")
